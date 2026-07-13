@@ -42,6 +42,7 @@
     }
   </style>
   <script>window.__brand = 'm8rzez';</script>
+  <template id="__bundler_thumbnail"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#fdfcf9"/><circle cx="50" cy="50" r="22" fill="#e07a3e"/><text x="50" y="57" font-size="20" text-anchor="middle" fill="#fff" font-family="sans-serif">m8</text></svg></template>
 </helmet>
 
 <div style="{{ shakeStyle }}position:relative;width:100%;min-height:100vh;overflow-x:hidden;background:{{ theme.pageBg }};color:{{ theme.textPrimary }};transition:background .5s ease, color .5s ease;" data-screen-label="Портфолио — лендинг">
@@ -139,22 +140,22 @@
     </div>
     <div id="gallery-grid" style="display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:120px;gap:16px;">
       <div style="grid-column:span 4;grid-row:span 3;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-1" shape="rect" src="uploads/Octavia-26.jpg" placeholder="Фото авто · крупный план" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+        <img src="uploads/compressed-Octavia-26.jpg" alt="Фото авто" style="width:100%;height:100%;object-fit:cover;display:block;"/>
       </div>
       <div style="grid-column:span 2;grid-row:span 2;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-2" shape="rect" src="uploads/Sorento%20-1.jpg" placeholder="Салон" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+        <img src="uploads/compressed-Sorento--1.jpg" alt="Салон" style="width:100%;height:100%;object-fit:cover;display:block;"/>
       </div>
       <div style="grid-column:span 2;grid-row:span 1;position:relative;border-radius:20px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-3" shape="rect" src="uploads/Hammer-7.jpg" placeholder="Детали" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+        <img src="uploads/compressed-Hammer-7.jpg" alt="Детали" style="width:100%;height:100%;object-fit:cover;display:block;"/>
       </div>
       <div style="grid-column:span 2;grid-row:span 2;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-4" shape="rect" src="uploads/33.png" placeholder="Экстерьер" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+        <img src="uploads/compressed-33.jpg" alt="Экстерьер" style="width:100%;height:100%;object-fit:cover;display:block;"/>
       </div>
       <div style="grid-column:span 2;grid-row:span 2;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-5" shape="rect" src="uploads/Sorento%20-1-8b9bb0a0.jpg" placeholder="Ночная съёмка" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+        <img src="uploads/compressed-Sorento--1-8b9bb0a0.jpg" alt="Ночная съёмка" style="width:100%;height:100%;object-fit:cover;display:block;"/>
       </div>
       <div style="grid-column:span 2;grid-row:span 2;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-6" shape="rect" placeholder="В движении" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+        <img src="uploads/gal-6-raw.webp" alt="В движении" style="width:100%;height:100%;object-fit:cover;display:block;"/>
       </div>
     </div>
   </section>
