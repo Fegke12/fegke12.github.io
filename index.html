@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: oklch(0.985 0.004 80); font-family: 'Manrope', sans-serif; }
+    * { box-sizing: border-box; }
+    ::selection { background: oklch(0.68 0.19 45 / 0.25); }
+    @keyframes floatBlob1 { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(90px,-70px) scale(1.2); } 66% { transform: translate(-70px,50px) scale(0.85); } }
+    @keyframes floatBlob2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-110px,70px) scale(1.25); } }
+    @keyframes floatBlob3 { 0%,100% { transform: translate(0,0) scale(1); } 40% { transform: translate(70px,90px) scale(0.75); } 70% { transform: translate(-50px,-60px) scale(1.15); } }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes gradientShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    @keyframes bounce { 0%,100% { transform: translateY(0); opacity:0.5; } 50% { transform: translateY(10px); opacity:1; } }
+    @keyframes pulseGlow { 0%,100% { opacity:0.5; } 50% { opacity:1; } }
+    @keyframes themeShake {
+      0% { transform: translate(0,0) rotate(0); }
+      20% { transform: translate(-7px,5px) rotate(-0.4deg); }
+      40% { transform: translate(7px,-5px) rotate(0.4deg); }
+      60% { transform: translate(-5px,4px) rotate(-0.25deg); }
+      80% { transform: translate(4px,-3px) rotate(0.2deg); }
+      100% { transform: translate(0,0) rotate(0); }
+    }
+    @media (max-width: 860px) {
+      #pricing-grid, #reviews-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+  <script>window.__brand = 'm8rzez';</script>
+</helmet>
+
+<div style="{{ shakeStyle }}position:relative;width:100%;min-height:100vh;overflow-x:hidden;background:{{ theme.pageBg }};color:{{ theme.textPrimary }};transition:background .5s ease, color .5s ease;" data-screen-label="Портфолио — лендинг">
+
+  <div style="position:fixed;left:{{ rippleX }}px;top:{{ rippleY }}px;width:32px;height:32px;margin-left:-16px;margin-top:-16px;border-radius:50%;background:{{ rippleColor }};transform:scale({{ rippleScale }});transition:transform .65s cubic-bezier(.65,0,.35,1);z-index:99999;pointer-events:none;opacity:{{ rippleOpacity }};"></div>
+
+  <!-- NAV -->
+  <nav ref="{{ navRef }}" style="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;width:min(1180px,94%);display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-radius:20px;background:{{ theme.navBg }};backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 8px 32px rgba(20,20,30,0.08);transition:background .5s ease, border-color .5s ease;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em;display:flex;align-items:center;gap:8px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:oklch(0.68 0.19 45);box-shadow:0 0 12px oklch(0.68 0.19 45 / 0.8);"></span>
+      m8rzez
+    </div>
+    <div style="display:flex;align-items:center;gap:24px;" class="__desktop-nav">
+      <a href="javascript:void(0)" onClick="{{ goGallery }}" style="color:{{ theme.textSecondary }};text-decoration:none;font-weight:600;font-size:14.5px;" style-hover="color:oklch(0.68 0.19 45);">Портфолио</a>
+      <a href="javascript:void(0)" onClick="{{ goServices }}" style="color:{{ theme.textSecondary }};text-decoration:none;font-weight:600;font-size:14.5px;" style-hover="color:oklch(0.68 0.19 45);">Услуги</a>
+      <a href="javascript:void(0)" onClick="{{ goAbout }}" style="color:{{ theme.textSecondary }};text-decoration:none;font-weight:600;font-size:14.5px;" style-hover="color:oklch(0.68 0.19 45);">Обо мне</a>
+      <a href="javascript:void(0)" onClick="{{ goReviews }}" style="color:{{ theme.textSecondary }};text-decoration:none;font-weight:600;font-size:14.5px;" style-hover="color:oklch(0.68 0.19 45);">Отзывы</a>
+      <button onClick="{{ toggleTheme }}" aria-label="Переключить тему" style="width:38px;height:38px;border-radius:12px;border:1px solid {{ theme.navBorder }};background:{{ theme.toggleBg }};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transform:rotate({{ toggleRotate }}deg);transition:transform .6s cubic-bezier(.34,1.56,.64,1), background .4s ease;">{{ toggleIcon }}</button>
+      <button onClick="{{ goContact }}" style="font-family:'Manrope',sans-serif;font-weight:700;font-size:14.5px;color:white;background:oklch(0.68 0.19 45);border:none;padding:11px 22px;border-radius:14px;cursor:pointer;box-shadow:0 6px 18px oklch(0.68 0.19 45 / 0.35);" style-hover="box-shadow:0 8px 24px oklch(0.68 0.19 45 / 0.5);transform:translateY(-1px);">Оставить заявку</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section ref="{{ heroRef }}" style="position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;overflow:hidden;">
+    <div style="position:absolute;top:-10%;left:8%;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle at 30% 30%, oklch(0.75 0.19 45 / 0.75), transparent 70%);filter:blur(6px);animation:floatBlob1 10s ease-in-out infinite;pointer-events:none;opacity:{{ theme.blobOpacity }};"></div>
+    <div style="position:absolute;bottom:-15%;right:6%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle at 60% 40%, oklch(0.72 0.17 260 / 0.6), transparent 70%);filter:blur(6px);animation:floatBlob2 13s ease-in-out infinite;pointer-events:none;opacity:{{ theme.blobOpacity }};"></div>
+    <div style="position:absolute;top:20%;right:20%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle, oklch(0.8 0.16 45 / 0.6), transparent 70%);filter:blur(5px);animation:floatBlob3 9s ease-in-out infinite;pointer-events:none;opacity:{{ theme.blobOpacity }};"></div>
+
+    <div style="position:relative;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.08em;text-transform:uppercase;color:oklch(0.68 0.19 45);margin-bottom:14px;">
+      Виталий · m8rzez
+    </div>
+    <div style="position:relative;display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:100px;background:{{ theme.badgeBg }};backdrop-filter:blur(16px);border:1px solid {{ theme.navBorder }};font-size:13.5px;font-weight:700;letter-spacing:0.02em;color:{{ theme.textTertiary }};margin-bottom:28px;box-shadow:0 4px 16px rgba(20,20,30,0.06);">
+      <span style="width:7px;height:7px;border-radius:50%;background:oklch(0.68 0.19 45);animation:pulseGlow 2s ease-in-out infinite;"></span>
+      Лучший результат для твоего объявления · Avito, Auto.ru, Drom
+    </div>
+
+    <h1 style="position:relative;font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,7vw,84px);line-height:1.02;font-weight:700;letter-spacing:-0.03em;margin:0 0 24px;max-width:1000px;">
+      Фото, которое<br/>
+      <span style="background:linear-gradient(100deg, oklch(0.62 0.19 45), oklch(0.62 0.17 15), oklch(0.62 0.19 45));background-size:200% 100%;animation:gradientShift 6s ease-in-out infinite;-webkit-background-clip:text;background-clip:text;color:transparent;">продаёт машину</span><br/>
+      быстрее
+    </h1>
+    <p style="position:relative;font-size:clamp(17px,2vw,20px);color:{{ theme.textSecondary }};max-width:560px;line-height:1.5;margin:0 0 40px;">
+      Виталий (m8rzez) — выездная съёмка автомобилей для объявлений. Свет, ракурсы и обработка, после которых машину замечают в первую же минуту.
+    </p>
+    <div style="position:relative;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <button onClick="{{ goGallery }}" style="font-family:'Manrope',sans-serif;position:relative;overflow:hidden;font-weight:700;font-size:15.5px;color:white;background:oklch(0.68 0.19 45);border:none;padding:16px 30px;border-radius:16px;cursor:pointer;box-shadow:0 10px 30px oklch(0.68 0.19 45 / 0.4);" style-hover="transform:translateY(-2px);box-shadow:0 14px 36px oklch(0.68 0.19 45 / 0.5);">Смотреть портфолио</button>
+      <button onClick="{{ goContact }}" style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15.5px;color:{{ theme.textPrimary }};background:{{ theme.badgeBg }};backdrop-filter:blur(16px);border:1px solid {{ theme.navBorder }};padding:16px 30px;border-radius:16px;cursor:pointer;box-shadow:0 6px 20px rgba(20,20,30,0.06);" style-hover="transform:translateY(-2px);">Записаться на съёмку</button>
+    </div>
+
+    <div style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:{{ theme.textTertiary }};font-size:12.5px;font-weight:600;letter-spacing:0.05em;">
+      <span>СКРОЛЛ</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" style="animation:bounce 1.8s ease-in-out infinite;"><path d="M2 5 L8 11 L14 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div style="position:relative;overflow:hidden;padding:16px 0;background:{{ theme.marqueeBg }};backdrop-filter:blur(14px);border-top:1px solid {{ theme.navBorder }};border-bottom:1px solid {{ theme.navBorder }};">
+    <div style="display:flex;width:max-content;animation:marquee 18s linear infinite;">
+      <span style="display:flex;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Skoda Octavia</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Hummer H3</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Mercedes ML</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Kia Sorento</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Съёмка для Avito</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+      </span>
+      <span style="display:flex;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Skoda Octavia</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Hummer H3</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Mercedes ML</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Kia Sorento</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:{{ theme.textTertiary }};padding:0 28px;white-space:nowrap;">Съёмка для Avito</span>
+        <span style="color:oklch(0.68 0.19 45);padding:0 4px;">✦</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <section ref="{{ galleryRef }}" style="{{ galleryRevealStyle }}position:relative;max-width:1180px;margin:0 auto;padding:100px 24px 60px;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:44px;">
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:oklch(0.68 0.19 45);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Портфолио</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4vw,44px);font-weight:700;letter-spacing:-0.02em;margin:0;">Свежие работы</h2>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:120px;gap:16px;">
+      <div style="grid-column:span 4;grid-row:span 3;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-1" shape="rect" src="uploads/Octavia-26.jpg" placeholder="Фото авто · крупный план" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+      </div>
+      <div style="grid-column:span 2;grid-row:span 2;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-2" shape="rect" src="uploads/Sorento%20-1.jpg" placeholder="Салон" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+      </div>
+      <div style="grid-column:span 2;grid-row:span 1;position:relative;border-radius:20px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-3" shape="rect" src="uploads/Hammer-7.jpg" placeholder="Детали" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+      </div>
+      <div style="grid-column:span 2;grid-row:span 2;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-4" shape="rect" src="uploads/33.png" placeholder="Экстерьер" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+      </div>
+      <div style="grid-column:span 2;grid-row:span 2;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-5" shape="rect" src="uploads/Sorento%20-1-8b9bb0a0.jpg" placeholder="Ночная съёмка" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+      </div>
+      <div style="grid-column:span 2;grid-row:span 2;position:relative;border-radius:24px;overflow:hidden;border:1px solid {{ theme.navBorder }};box-shadow:0 12px 32px rgba(20,20,30,0.08);transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.015);">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="gal-6" shape="rect" placeholder="В движении" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section ref="{{ servicesRef }}" style="{{ servicesRevealStyle }}position:relative;max-width:1180px;margin:0 auto;padding:80px 24px;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div style="font-size:13.5px;font-weight:700;color:oklch(0.68 0.19 45);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Услуги и цены</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4vw,44px);font-weight:700;letter-spacing:-0.02em;margin:0;">Выберите формат съёмки</h2>
+    </div>
+    <div id="pricing-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+      <div style="position:relative;overflow:hidden;padding:36px 28px;border-radius:28px;background:{{ theme.cardBg }};backdrop-filter:blur(24px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 12px 36px rgba(20,20,30,0.07);display:flex;flex-direction:column;gap:20px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;">Базовый</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:700;">1 000 ₽</div>
+        <div style="height:1px;background:{{ theme.dividerColor }};"></div>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;color:{{ theme.textSecondary }};font-size:14.5px;">
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ 12 фото экстерьера/салона</li>
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ Базовая цветокоррекция</li>
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ Готово в тот же день</li>
+        </ul>
+        <button style="margin-top:auto;font-family:'Manrope',sans-serif;font-weight:700;font-size:14.5px;color:{{ theme.textPrimary }};background:{{ theme.badgeBg }};border:1px solid {{ theme.navBorder }};padding:13px 20px;border-radius:14px;cursor:pointer;" onClick="{{ pickBasic }}">Выбрать</button>
+      </div>
+      <div style="position:relative;padding:40px 28px;border-radius:28px;background:linear-gradient(160deg, oklch(0.68 0.19 45 / 0.16), {{ theme.cardBg }});backdrop-filter:blur(24px) saturate(180%);border:1.5px solid oklch(0.68 0.19 45 / 0.5);box-shadow:0 16px 44px oklch(0.68 0.19 45 / 0.16);display:flex;flex-direction:column;gap:20px;transform:scale(1.04);">
+        <div style="position:absolute;top:-14px;left:28px;background:oklch(0.68 0.19 45);color:white;font-size:12px;font-weight:700;padding:6px 14px;border-radius:100px;letter-spacing:0.03em;">ПОПУЛЯРНЫЙ</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;">Стандарт</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:700;">1 500 ₽</div>
+        <div style="height:1px;background:{{ theme.dividerColor }};"></div>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;color:{{ theme.textSecondary }};font-size:14.5px;">
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ 25+ фото, все ракурсы</li>
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ Художественная обработка</li>
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ 1–2 локации на выбор</li>
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ Короткое видео-тизер</li>
+        </ul>
+        <button style="margin-top:auto;font-family:'Manrope',sans-serif;font-weight:700;font-size:14.5px;color:white;background:oklch(0.68 0.19 45);border:none;padding:13px 20px;border-radius:14px;cursor:pointer;box-shadow:0 8px 22px oklch(0.68 0.19 45 / 0.35);" style-hover="transform:translateY(-1px);" onClick="{{ pickStandard }}">Выбрать</button>
+      </div>
+      <div style="position:relative;overflow:hidden;padding:36px 28px;border-radius:28px;background:{{ theme.cardBg }};backdrop-filter:blur(24px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 12px 36px rgba(20,20,30,0.07);display:flex;flex-direction:column;gap:20px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;">Премиум</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:700;">2 000 ₽</div>
+        <div style="height:1px;background:{{ theme.dividerColor }};"></div>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;color:{{ theme.textSecondary }};font-size:14.5px;">
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ Полный сет + деталировка</li>
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ Съёмка в движении</li>
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ Продающее видео для соцсетей</li>
+          <li style="display:flex;gap:10px;align-items:flex-start;">✓ Приоритетная обработка</li>
+        </ul>
+        <button style="margin-top:auto;font-family:'Manrope',sans-serif;font-weight:700;font-size:14.5px;color:{{ theme.textPrimary }};background:{{ theme.badgeBg }};border:1px solid {{ theme.navBorder }};padding:13px 20px;border-radius:14px;cursor:pointer;" onClick="{{ pickPremium }}">Выбрать</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section ref="{{ aboutRef }}" style="{{ aboutRevealStyle }}position:relative;max-width:1180px;margin:0 auto;padding:80px 24px;">
+    <div style="max-width:720px;margin:0 auto;">
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:oklch(0.68 0.19 45);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Обо мне</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.6vw,40px);font-weight:700;letter-spacing:-0.02em;margin:0 0 20px;">Виталий, автомобильный фотограф</h2>
+        <p style="font-size:16px;line-height:1.65;color:{{ theme.textSecondary }};margin:0 0 18px;">Снимаю автомобили для продажи на Avito, Auto.ru и Drom — так, чтобы объявление выделялось среди сотен похожих. Выезжаю к вам в удобное время и локацию, работаю с любым освещением.</p>
+        <p style="font-size:16px;line-height:1.65;color:{{ theme.textSecondary }};margin:0 0 32px;">Ник в соцсетях и на площадках — <b style="color:{{ theme.textPrimary }};">m8rzez</b>.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+          <div style="padding:18px 12px;border-radius:20px;background:{{ theme.cardBg }};backdrop-filter:blur(20px);border:1px solid {{ theme.navBorder }};box-shadow:0 8px 24px rgba(20,20,30,0.06);text-align:center;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:oklch(0.68 0.19 45);">10+</div>
+            <div style="font-size:13px;color:{{ theme.textTertiary }};font-weight:600;">снятых авто</div>
+          </div>
+          <div style="padding:18px 12px;border-radius:20px;background:{{ theme.cardBg }};backdrop-filter:blur(20px);border:1px solid {{ theme.navBorder }};box-shadow:0 8px 24px rgba(20,20,30,0.06);text-align:center;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:oklch(0.68 0.19 45);">&lt;1 года</div>
+            <div style="font-size:13px;color:{{ theme.textTertiary }};font-weight:600;">опыта съёмки</div>
+          </div>
+          <div style="padding:18px 12px;border-radius:20px;background:{{ theme.cardBg }};backdrop-filter:blur(20px);border:1px solid {{ theme.navBorder }};box-shadow:0 8px 24px rgba(20,20,30,0.06);text-align:center;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:oklch(0.68 0.19 45);">24ч</div>
+            <div style="font-size:13px;color:{{ theme.textTertiary }};font-weight:600;">на обработку</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section ref="{{ reviewsRef }}" style="{{ reviewsRevealStyle }}position:relative;max-width:1180px;margin:0 auto;padding:80px 24px;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div style="font-size:13.5px;font-weight:700;color:oklch(0.68 0.19 45);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Отзывы</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4vw,44px);font-weight:700;letter-spacing:-0.02em;margin:0;">Клиенты о съёмке</h2>
+    </div>
+    <div id="reviews-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch;">
+      <div style="position:relative;display:flex;flex-direction:column;padding:32px 28px;border-radius:24px;background:{{ theme.cardBg }};backdrop-filter:blur(20px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 10px 30px rgba(20,20,30,0.06);">
+        <div style="font-family:Georgia,serif;font-size:56px;line-height:1;color:oklch(0.68 0.19 45 / 0.3);position:absolute;top:18px;right:24px;">"</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg, oklch(0.68 0.19 45), oklch(0.62 0.17 15));display:flex;align-items:center;justify-content:center;color:white;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;flex-shrink:0;">ДЗ</div>
+          <div>
+            <div style="font-weight:700;font-size:14.5px;">Денис Зайцев</div>
+            <div style="color:oklch(0.68 0.19 45);font-size:13px;letter-spacing:1px;">★★★★★</div>
+          </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.6;color:{{ theme.textSecondary2 }};margin:0;flex:1;">Виталий, очень чуткий и пунктуальный молодой человек! Подходит к делу на 100% и даже более, в своём деле знает толк и аппаратура хорошая! Я даже не думал что моя машина такая красавица, как он преподнёс.</p>
+      </div>
+      <div style="position:relative;display:flex;flex-direction:column;padding:32px 28px;border-radius:24px;background:{{ theme.cardBg }};backdrop-filter:blur(20px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 10px 30px rgba(20,20,30,0.06);">
+        <div style="font-family:Georgia,serif;font-size:56px;line-height:1;color:oklch(0.68 0.19 45 / 0.3);position:absolute;top:18px;right:24px;">"</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg, oklch(0.68 0.19 45), oklch(0.62 0.17 15));display:flex;align-items:center;justify-content:center;color:white;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;flex-shrink:0;">А</div>
+          <div>
+            <div style="font-weight:700;font-size:14.5px;">Артём</div>
+            <div style="color:oklch(0.68 0.19 45);font-size:13px;letter-spacing:1px;">★★★★★</div>
+          </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.6;color:{{ theme.textSecondary2 }};margin:0;flex:1;">Все хорошо, фото отличные, рекомендую.</p>
+      </div>
+      <div style="position:relative;display:flex;flex-direction:column;padding:32px 28px;border-radius:24px;background:{{ theme.cardBg }};backdrop-filter:blur(20px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 10px 30px rgba(20,20,30,0.06);">
+        <div style="font-family:Georgia,serif;font-size:56px;line-height:1;color:oklch(0.68 0.19 45 / 0.3);position:absolute;top:18px;right:24px;">"</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg, oklch(0.68 0.19 45), oklch(0.62 0.17 15));display:flex;align-items:center;justify-content:center;color:white;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;flex-shrink:0;">А</div>
+          <div>
+            <div style="font-weight:700;font-size:14.5px;">Андрей</div>
+            <div style="color:oklch(0.68 0.19 45);font-size:13px;letter-spacing:1px;">★★★★★</div>
+          </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.6;color:{{ theme.textSecondary2 }};margin:0;flex:1;">Легенда, брат снимает крут!</p>
+      </div>
+      <div style="position:relative;display:flex;flex-direction:column;padding:32px 28px;border-radius:24px;background:{{ theme.cardBg }};backdrop-filter:blur(20px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 10px 30px rgba(20,20,30,0.06);">
+        <div style="font-family:Georgia,serif;font-size:56px;line-height:1;color:oklch(0.68 0.19 45 / 0.3);position:absolute;top:18px;right:24px;">"</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg, oklch(0.68 0.19 45), oklch(0.62 0.17 15));display:flex;align-items:center;justify-content:center;color:white;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;flex-shrink:0;">МК</div>
+          <div>
+            <div style="font-weight:700;font-size:14.5px;">Максим Крылов</div>
+            <div style="color:oklch(0.68 0.19 45);font-size:13px;letter-spacing:1px;">★★★★★</div>
+          </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.6;color:{{ theme.textSecondary2 }};margin:0;flex:1;">Продавал Hyundai Solaris полгода без единого звонка. После съёмки у Виталия — три просмотра в первый час и продажа за два дня. Просто другой уровень фото, не сравнить с тем, что снимал сам на телефон.</p>
+      </div>
+      <div style="position:relative;display:flex;flex-direction:column;padding:32px 28px;border-radius:24px;background:{{ theme.cardBg }};backdrop-filter:blur(20px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 10px 30px rgba(20,20,30,0.06);">
+        <div style="font-family:Georgia,serif;font-size:56px;line-height:1;color:oklch(0.68 0.19 45 / 0.3);position:absolute;top:18px;right:24px;">"</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg, oklch(0.68 0.19 45), oklch(0.62 0.17 15));display:flex;align-items:center;justify-content:center;color:white;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;flex-shrink:0;">ОП</div>
+          <div>
+            <div style="font-weight:700;font-size:14.5px;">Ольга Петрова</div>
+            <div style="color:oklch(0.68 0.19 45);font-size:13px;letter-spacing:1px;">★★★★★</div>
+          </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.6;color:{{ theme.textSecondary2 }};margin:0;flex:1;">Боялась, что мужчина-фотограф забьёт на детали, но нет — вылизал каждую царапину светом так, что её просто не видно на фото. Ещё и по времени подстроился под мой график. Всем знакомым теперь советую только его.</p>
+      </div>
+      <div style="position:relative;display:flex;flex-direction:column;padding:32px 28px;border-radius:24px;background:{{ theme.cardBg }};backdrop-filter:blur(20px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 10px 30px rgba(20,20,30,0.06);">
+        <div style="font-family:Georgia,serif;font-size:56px;line-height:1;color:oklch(0.68 0.19 45 / 0.3);position:absolute;top:18px;right:24px;">"</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg, oklch(0.68 0.19 45), oklch(0.62 0.17 15));display:flex;align-items:center;justify-content:center;color:white;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;flex-shrink:0;">РС</div>
+          <div>
+            <div style="font-weight:700;font-size:14.5px;">Роман Селиванов</div>
+            <div style="color:oklch(0.68 0.19 45);font-size:13px;letter-spacing:1px;">★★★★★</div>
+          </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.6;color:{{ theme.textSecondary2 }};margin:0;flex:1;">Гонял по трём дилерам за похожими ценами на съёмку — взял Виталия из-за портфолио, и не пожалел. Приехал точно вовремя, снял и салон, и экстерьер, и даже пару кадров в движении для сторис. Огонь просто.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section ref="{{ contactRef }}" style="{{ contactRevealStyle }}position:relative;max-width:840px;margin:0 auto;padding:80px 24px 60px;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div style="font-size:13.5px;font-weight:700;color:oklch(0.68 0.19 45);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Контакты</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4vw,44px);font-weight:700;letter-spacing:-0.02em;margin:0;">Запишитесь на съёмку</h2>
+    </div>
+    <form onSubmit="{{ handleSubmit }}" style="position:relative;padding:40px;border-radius:32px;background:{{ theme.cardBg }};backdrop-filter:blur(26px) saturate(180%);border:1px solid {{ theme.navBorder }};box-shadow:0 20px 50px rgba(20,20,30,0.1);display:flex;flex-direction:column;gap:16px;">
+      <input name="name" required="true" placeholder="Имя" style="font-family:'Manrope',sans-serif;font-size:15px;padding:15px 18px;border-radius:14px;border:1px solid {{ theme.navBorder }};background:{{ theme.inputBg }};color:{{ theme.textPrimary }};outline:none;" style-focus="border-color:oklch(0.68 0.19 45);"/>
+      <input name="phone" required="true" placeholder="Телефон" style="font-family:'Manrope',sans-serif;font-size:15px;padding:15px 18px;border-radius:14px;border:1px solid {{ theme.navBorder }};background:{{ theme.inputBg }};color:{{ theme.textPrimary }};outline:none;" style-focus="border-color:oklch(0.68 0.19 45);"/>
+      <input name="car" required="true" placeholder="Марка авто" style="font-family:'Manrope',sans-serif;font-size:15px;padding:15px 18px;border-radius:14px;border:1px solid {{ theme.navBorder }};background:{{ theme.inputBg }};color:{{ theme.textPrimary }};outline:none;" style-focus="border-color:oklch(0.68 0.19 45);"/>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:{{ theme.textTertiary }};margin-bottom:10px;">Пакет услуг</div>
+        <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:5px;border-radius:16px;background:{{ theme.inputBg }};border:1px solid {{ theme.navBorder }};">
+          <div style="{{ pillStyle }}"></div>
+          <sc-for list="{{ packages }}" as="pkg" hint-placeholder-count="3">
+            <button type="button" onClick="{{ pkg.select }}" style="{{ pkg.style }}">{{ pkg.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <button type="submit" disabled="{{ submitDisabled }}" style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15.5px;color:white;background:oklch(0.68 0.19 45);border:none;padding:16px;border-radius:14px;cursor:pointer;box-shadow:0 10px 28px oklch(0.68 0.19 45 / 0.35);margin-top:6px;" style-hover="transform:translateY(-1px);box-shadow:0 14px 34px oklch(0.68 0.19 45 / 0.45);">{{ submitLabel }}</button>
+      <sc-if value="{{ formError }}"><div style="color:#e0685c;font-size:13.5px;text-align:center;">{{ formError }}</div></sc-if>
+    </form>
+    <div style="display:flex;justify-content:center;gap:28px;margin-top:28px;flex-wrap:wrap;color:{{ theme.textSecondary }};font-size:14.5px;font-weight:600;">
+      <a href="https://t.me/M8RZEZ" target="_blank" style="color:{{ theme.textSecondary }};text-decoration:none;font-weight:600;" style-hover="color:oklch(0.68 0.19 45);">✈️ Telegram</a>
+      <a href="https://vk.com/panamee" target="_blank" style="color:{{ theme.textSecondary }};text-decoration:none;font-weight:600;" style-hover="color:oklch(0.68 0.19 45);">VK</a>
+      <a href="https://www.avito.ru/cherepovets/predlozheniya_uslug/avtomobilnyy_fotograf_semka_avto_dlya_prodazhi_8074358327" target="_blank" style="color:{{ theme.textSecondary }};text-decoration:none;font-weight:600;" style-hover="color:oklch(0.68 0.19 45);">Avito</a>
+      <span>📍 Выезд по городу</span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="position:relative;max-width:1180px;margin:0 auto;padding:36px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-top:1px solid {{ theme.navBorder }};color:{{ theme.textTertiary }};font-size:13.5px;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:{{ theme.textPrimary }};">m8rzez © {{ year }}</div>
+    <div>Фотограф автомобилей для Avito, Auto.ru, Drom</div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const BOT_TOKEN = '8980342424:AAFL93i5X45YS4pnG-DVwMe1MnqjCmDeWbc';
+const CHAT_ID = '1412649757';
+const PACKAGES = ['Базовый', 'Стандарт', 'Премиум'];
+
+const LIGHT_BG = 'oklch(0.985 0.004 80)';
+const DARK_BG = 'oklch(0.19 0.012 260)';
+
+function getTheme(dark) {
+  return dark ? {
+    pageBg: DARK_BG,
+    textPrimary: 'oklch(0.96 0.005 80)',
+    textSecondary: 'oklch(0.78 0.01 80)',
+    textSecondary2: 'oklch(0.75 0.01 80)',
+    textTertiary: 'oklch(0.65 0.012 80)',
+    cardBg: 'rgba(255,255,255,0.055)',
+    navBg: 'rgba(30,32,40,0.55)',
+    navBorder: 'rgba(255,255,255,0.12)',
+    badgeBg: 'rgba(255,255,255,0.08)',
+    inputBg: 'rgba(255,255,255,0.06)',
+    marqueeBg: 'rgba(255,255,255,0.03)',
+    dividerColor: 'rgba(255,255,255,0.1)',
+    toggleBg: 'rgba(255,255,255,0.08)',
+    blobOpacity: 0.55
+  } : {
+    pageBg: LIGHT_BG,
+    textPrimary: 'oklch(0.2 0.01 80)',
+    textSecondary: 'oklch(0.42 0.015 80)',
+    textSecondary2: 'oklch(0.35 0.015 80)',
+    textTertiary: 'oklch(0.45 0.015 80)',
+    cardBg: 'rgba(255,255,255,0.55)',
+    navBg: 'rgba(255,255,255,0.55)',
+    navBorder: 'rgba(255,255,255,0.8)',
+    badgeBg: 'rgba(255,255,255,0.6)',
+    inputBg: 'rgba(255,255,255,0.7)',
+    marqueeBg: 'rgba(255,255,255,0.5)',
+    dividerColor: 'rgba(0,0,0,0.08)',
+    toggleBg: 'rgba(255,255,255,0.7)',
+    blobOpacity: 1
+  };
+}
+
+class Component extends DCLogic {
+  state = {
+    revealed: {}, formSent: false, sending: false, formError: null, selectedPackage: 'Стандарт',
+    dark: false, transitioning: false, rippleActive: false, rippleX: 0, rippleY: 0, rippleColor: LIGHT_BG, rippleScale: 0, shaking: false
+  };
+  sectionEls = {};
+  observer = null;
+
+  componentDidMount() {
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.__sectionId;
+          if (id && !this.state.revealed[id]) {
+            this.setState(s => ({ revealed: { ...s.revealed, [id]: true } }));
+          }
+        }
+      });
+    }, { threshold: 0.15 });
+  }
+
+  componentWillUnmount() {
+    if (this.observer) this.observer.disconnect();
+  }
+
+  makeRef(id) {
+    return (el) => {
+      if (el && !this.sectionEls[id]) {
+        this.sectionEls[id] = el;
+        el.__sectionId = id;
+        if (this.observer) this.observer.observe(el);
+      }
+    };
+  }
+
+  scrollTo(id) {
+    const el = this.sectionEls[id];
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 84;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+
+  revealStyle(id) {
+    const on = this.state.revealed[id];
+    return {
+      opacity: on ? 1 : 0,
+      transform: on ? 'translateY(0)' : 'translateY(36px)',
+      transition: 'opacity 0.9s cubic-bezier(.2,.8,.2,1), transform 0.9s cubic-bezier(.2,.8,.2,1)'
+    };
+  }
+
+  selectPackage(name) {
+    this.setState({ selectedPackage: name });
+  }
+
+  packageStyle(name) {
+    const on = this.state.selectedPackage === name;
+    const color = on ? 'white' : (this.state.dark ? 'oklch(0.8 0.01 80)' : 'oklch(0.35 0.01 80)');
+    return `position:relative;z-index:1;background:transparent;color:${color};border:none;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;padding:11px 10px;border-radius:12px;cursor:pointer;transition:color .35s ease .05s;`;
+  }
+
+  pillStyle() {
+    const idx = Math.max(0, PACKAGES.indexOf(this.state.selectedPackage));
+    return `position:absolute;top:5px;left:5px;bottom:5px;width:calc(33.333% - 6.67px);border-radius:12px;background:oklch(0.68 0.19 45);box-shadow:0 6px 16px oklch(0.68 0.19 45 / 0.4);transform:translateX(calc(${idx} * (100% + 4px)));transition:transform .4s cubic-bezier(.34,1.56,.64,1);`;
+  }
+
+  toggleTheme(e) {
+    if (this.state.transitioning) return;
+    const x = e.clientX, y = e.clientY;
+    const nextDark = !this.state.dark;
+    const rippleColor = nextDark ? DARK_BG : LIGHT_BG;
+    this.setState({ transitioning: true, rippleActive: true, rippleX: x, rippleY: y, rippleColor, rippleScale: 0 });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.setState({ rippleScale: 65 });
+      });
+    });
+    setTimeout(() => {
+      this.setState({ dark: nextDark, shaking: true });
+    }, 360);
+    setTimeout(() => {
+      this.setState({ shaking: false });
+    }, 780);
+    setTimeout(() => {
+      this.setState({ rippleActive: false, transitioning: false, rippleScale: 0 });
+    }, 820);
+  }
+
+  async submitToBot(e) {
+    e.preventDefault();
+    if (this.state.sending) return;
+    const form = e.target;
+    const name = form.querySelector('[name="name"]')?.value || '';
+    const phone = form.querySelector('[name="phone"]')?.value || '';
+    const car = form.querySelector('[name="car"]')?.value || '';
+    const text = `🚗 Новая заявка с сайта\n\nИмя: ${name}\nТелефон: ${phone}\nМарка авто: ${car}\nПакет: ${this.state.selectedPackage}`;
+    this.setState({ sending: true, formError: null });
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text })
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.description || 'Ошибка отправки');
+      this.setState({ sending: false, formSent: true });
+      form.reset();
+    } catch (err) {
+      this.setState({ sending: false, formError: 'Не получилось отправить. Напишите напрямую в Telegram.' });
+    }
+  }
+
+  renderVals() {
+    const theme = getTheme(this.state.dark);
+    return {
+      theme,
+      navRef: () => {},
+      heroRef: this.makeRef('hero'),
+      galleryRef: this.makeRef('gallery'),
+      servicesRef: this.makeRef('services'),
+      aboutRef: this.makeRef('about'),
+      reviewsRef: this.makeRef('reviews'),
+      contactRef: this.makeRef('contact'),
+      galleryRevealStyle: this.revealStyle('gallery'),
+      servicesRevealStyle: this.revealStyle('services'),
+      aboutRevealStyle: this.revealStyle('about'),
+      reviewsRevealStyle: this.revealStyle('reviews'),
+      contactRevealStyle: this.revealStyle('contact'),
+      goGallery: () => this.scrollTo('gallery'),
+      goServices: () => this.scrollTo('services'),
+      goAbout: () => this.scrollTo('about'),
+      goReviews: () => this.scrollTo('reviews'),
+      goContact: () => this.scrollTo('contact'),
+      pickBasic: () => { this.selectPackage('Базовый'); this.scrollTo('contact'); },
+      pickStandard: () => { this.selectPackage('Стандарт'); this.scrollTo('contact'); },
+      pickPremium: () => { this.selectPackage('Премиум'); this.scrollTo('contact'); },
+      handleSubmit: (e) => this.submitToBot(e),
+      toggleTheme: (e) => this.toggleTheme(e),
+      toggleIcon: this.state.dark ? '☀️' : '🌙',
+      toggleRotate: this.state.dark ? 180 : 0,
+      rippleX: this.state.rippleX,
+      rippleY: this.state.rippleY,
+      rippleColor: this.state.rippleColor,
+      rippleScale: this.state.rippleScale,
+      rippleOpacity: this.state.rippleActive ? 1 : 0,
+      shakeStyle: this.state.shaking ? 'animation:themeShake 0.4s ease;' : '',
+      packages: PACKAGES.map(p => ({
+        label: p,
+        style: this.packageStyle(p),
+        select: () => this.selectPackage(p)
+      })),
+      pillStyle: this.pillStyle(),
+      formError: this.state.formError,
+      submitDisabled: this.state.sending,
+      submitLabel: this.state.sending ? 'Отправка…' : (this.state.formSent ? 'Заявка отправлена ✓' : 'Оставить заявку'),
+      year: new Date().getFullYear()
+    };
+  }
+}
+
+</script>
+</body>
+</html>
