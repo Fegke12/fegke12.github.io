@@ -484,22 +484,22 @@ class Component extends DCLogic {
     const name = form.querySelector('[name="name"]')?.value || '';
     const phone = form.querySelector('[name="phone"]')?.value || '';
     const car = form.querySelector('[name="car"]')?.value || '';
-    const text = `🚗 Новая заявка с сайта\n\nИмя: ${name}\nТелефон: ${phone}\nМарка авто: ${car}\nПакет: ${this.state.selectedPackage}`;
+    const pkg = this.state.selectedPackage;
     this.setState({ sending: true, formError: null });
     try {
-      const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      const r = await fetch('https://photo-bot-proxy.fegke15.workers.dev/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, text })
+        body: JSON.stringify({ name, contact: phone, car, type: pkg })
       });
-      const data = await res.json();
+      const data = await r.json();
       if (!data.ok) throw new Error(data.description || 'Ошибка отправки');
       this.setState({ sending: false, formSent: true });
       form.reset();
     } catch (err) {
       this.setState({ sending: false, formError: 'Не получилось отправить. Напишите напрямую в Telegram.' });
     }
-  }
+}
 
   renderVals() {
     const theme = getTheme(this.state.dark);
