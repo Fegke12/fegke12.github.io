@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     return btoa(bin);
   }
 
-  // Error sink persists across replaceWith since it's on window, not the DOM.
+ // Error sink persists across replaceWith since it's on window, not the DOM.
   window.addEventListener('error', function(e) {
     // Failed resource loads (CSP-blocked links, scripts, images) fire plain
     // events at the element — warn only; real JS errors carry message/error.
@@ -55,15 +55,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       '[bundle] ' + (e.message || e.type) +
       (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
   }, true);
-
-  try {
-    const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
-    const templateEl = document.querySelector('script[type="__bundler/template"]');
-    if (!manifestEl || !templateEl) {
-      setStatus('Error: missing bundle data');
-      console.error('[bundler] Missing script tags — manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);
-      return;
-    }
 
     const manifest = JSON.parse(manifestEl.textContent);
     let template = JSON.parse(templateEl.textContent);
